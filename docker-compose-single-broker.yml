@@ -1,0 +1,35 @@
+# compose 파일 버전
+version: '2'
+
+services:
+# 서비스 명
+  zookeeper:
+    # 사용할 이미지
+    image: wurstmeister/zookeeper
+    # 컨테이너명 설정
+    container_name: zookeeper
+    # 접근 포트 설정 (컨테이너 외부:컨테이너 내부)
+    ports:
+      - "2181:2181"
+# 서비스 명
+  kafka:
+     # 사용할 이미지
+    image: wurstmeister/kafka
+    # 컨테이너명 설정
+    container_name: kafka
+    # kafka 브로커의 포트,접근 포트 설정 (컨테이너 외부:컨테이너 내부)
+    ports:
+      - "9092:9092"
+    # kafka 브로커를 위한 환경 변수 설정
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: 127.0.0.1
+      # Kafka 컨테이너가 시작될 때 Topic이라는 이름의 토픽을 생성하도록 지시 (Topic명:Partition개수:Replica개수)
+      KAFKA_CREATE_TOPICS: "myCustomTopic:1:1"
+      # 연결할 (서비스이름:컨테이너 내부 포트)
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    # 볼륨 설정 :컨테이너 간 또는 호스트 시스템과 컨테이너 간에 데이터를 공유할 수 있으며, 컨테이너가 제거되더라도 데이터가 보존
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+
+

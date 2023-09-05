@@ -30,7 +30,7 @@ func Producer() {
 	}()
 
 	// Produce messages to topic (asynchronously)
-	topic := "myTopic"
+	topic := "myCustomTopic2"
 	for _, word := range []string{"Welcome", "to", "the", "Confluent", "Kafka", "Golang", "client"} {
 		p.Produce(&kafka.Message{
 			TopicPartition: kafka.TopicPartition{Topic: &topic, Partition: kafka.PartitionAny},
@@ -52,7 +52,7 @@ func Consumer() {
 		panic(err)
 	}
 
-	c.SubscribeTopics([]string{"myTopic", "^aRegex.*[Tt]opic"}, nil)
+	c.SubscribeTopics([]string{"myCustomTopic2"}, nil)
 
 	// A signal handler or similar could be used to set this to false to break the loop.
 	run := true
